@@ -21,10 +21,11 @@ class Settings:
             "dev-secret-key-change-in-production"
         )
         self.jwt_expiry_hours: int = int(os.getenv("JWT_EXPIRY_HOURS", "24"))
-        self.cors_origins: list[str] = os.getenv(
-            "CORS_ORIGINS",
-            "http://localhost:3000"
-        ).split(",")
+        cors_env = os.getenv("CORS_ORIGINS", "*")
+        if cors_env == "*":
+            self.cors_origins: list[str] = ["*"]
+        else:
+            self.cors_origins: list[str] = cors_env.split(",")
 
 
 @lru_cache
