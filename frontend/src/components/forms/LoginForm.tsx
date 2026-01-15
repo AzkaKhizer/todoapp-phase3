@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
-import { useAuth } from "@/hooks/useAuth";
+import { signIn } from "@/lib/auth-client";
 
 interface LoginFormData {
   email: string;
@@ -11,8 +12,9 @@ interface LoginFormData {
 }
 
 export function LoginForm() {
-  const { login, error: authError } = useAuth();
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const {
     register,
@@ -22,10 +24,30 @@ export function LoginForm() {
 
   const onSubmit = async (data: LoginFormData) => {
     setIsSubmitting(true);
+    setError(null);
+
     try {
-      await login(data.email, data.password);
-    } catch {
-      // Error is handled by auth context
+      console.log("Attempting login for:", data.email);
+
+      const result = await signIn.email({
+        email: data.email,
+        password: data.password,
+      });
+
+      console.log("Login result:", result);
+
+      if (result.error) {
+        console.error("Login error:", result.error);
+        setError(result.error.message || "Login failed");
+        return;
+      }
+
+      // Success - redirect to dashboard
+      console.log("Login successful, redirecting...");
+      router.push("/dashboard");
+    } catch (err) {
+      console.error("Login exception:", err);
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setIsSubmitting(false);
     }
@@ -33,12 +55,12 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      {authError && (
+      {error && (
         <div className="p-4 rounded-lg bg-[var(--error)]/10 border border-[var(--error)]/20 text-[var(--error)] text-sm flex items-center gap-3">
           <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
-          {authError}
+          {error}
         </div>
       )}
 

@@ -1,91 +1,63 @@
-"""Authentication endpoints for registration, login, and user info."""
+"""Authentication endpoints.
 
-from fastapi import APIRouter, Depends, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlmodel import select
+Registration and login are now handled by Better Auth on the frontend.
+This router provides endpoints for getting current user info and logout.
+"""
 
-from app.database import get_session
-from app.dependencies.auth import get_current_user
-from app.exceptions import AuthenticationError, ConflictError
-from app.models.user import User
-from app.schemas.auth import (
-    AuthResponse,
-    LoginRequest,
-    MessageResponse,
-    UserCreate,
-    UserResponse,
-)
-from app.services.auth import create_access_token, hash_password, verify_password
+from fastapi import APIRouter, Depends, HTTPException, status
+
+from app.dependencies.auth import get_current_user_id
+from app.schemas.auth import MessageResponse, UserResponse
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
-@router.post("/register", response_model=AuthResponse, status_code=status.HTTP_201_CREATED)
-async def register(
-    data: UserCreate,
-    session: AsyncSession = Depends(get_session),
-) -> AuthResponse:
-    """Register a new user."""
-    # Check if email already exists
-    result = await session.execute(select(User).where(User.email == data.email))
-    existing_user = result.scalar_one_or_none()
+@router.post("/register", status_code=status.HTTP_410_GONE)
+async def register() -> dict:
+    """Registration is now handled by Better Auth.
 
-    if existing_user:
-        raise ConflictError("Email already registered")
-
-    # Create new user
-    user = User(
-        email=data.email,
-        password_hash=hash_password(data.password),
-    )
-    session.add(user)
-    await session.commit()
-    await session.refresh(user)
-
-    # Generate token
-    token = create_access_token(user.id, user.email)
-
-    return AuthResponse(
-        user=UserResponse.model_validate(user),
-        token=token,
+    Use the frontend /api/auth/sign-up endpoint instead.
+    """
+    raise HTTPException(
+        status_code=status.HTTP_410_GONE,
+        detail="Registration is now handled by Better Auth. Use the frontend authentication."
     )
 
 
-@router.post("/login", response_model=AuthResponse)
-async def login(
-    data: LoginRequest,
-    session: AsyncSession = Depends(get_session),
-) -> AuthResponse:
-    """Login a user and return a token."""
-    # Find user by email
-    result = await session.execute(select(User).where(User.email == data.email))
-    user = result.scalar_one_or_none()
+@router.post("/login", status_code=status.HTTP_410_GONE)
+async def login() -> dict:
+    """Login is now handled by Better Auth.
 
-    if not user or not verify_password(data.password, user.password_hash):
-        raise AuthenticationError("Invalid email or password")
-
-    # Generate token
-    token = create_access_token(user.id, user.email)
-
-    return AuthResponse(
-        user=UserResponse.model_validate(user),
-        token=token,
+    Use the frontend /api/auth/sign-in endpoint instead.
+    """
+    raise HTTPException(
+        status_code=status.HTTP_410_GONE,
+        detail="Login is now handled by Better Auth. Use the frontend authentication."
     )
 
 
 @router.post("/logout", response_model=MessageResponse)
-async def logout(
-    current_user: User = Depends(get_current_user),
-) -> MessageResponse:
-    """Logout the current user."""
-    # JWT is stateless, so logout is handled client-side
-    # This endpoint exists for API completeness
-    return MessageResponse(message="Successfully logged out")
+async def logout() -> MessageResponse:
+    """Logout endpoint for API completeness.
+
+    Better Auth handles session management, so this is a no-op.
+    The frontend should call the Better Auth signOut method.
+    """
+    return MessageResponse(message="Use Better Auth signOut on the frontend")
 
 
 @router.get("/me", response_model=UserResponse)
 async def get_current_user_info(
-    current_user: User = Depends(get_current_user),
+    user_id: str = Depends(get_current_user_id),
 ) -> UserResponse:
-    """Get the current authenticated user's information."""
-    return UserResponse.model_validate(current_user)
+    """Get the current authenticated user's information from the JWT.
+
+    This extracts user info directly from the Better Auth JWT token.
+    """
+    # For now, we return minimal info from the JWT
+    # The user_id is a UUID string from Better Auth
+    return UserResponse(
+        id=user_id,
+        email="",  # Email may not be in all tokens
+        created_at="",  # Not available from JWT
+    )

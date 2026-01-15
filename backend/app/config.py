@@ -16,9 +16,17 @@ class Settings:
             "DATABASE_URL",
             "postgresql+asyncpg://localhost/todo"
         )
-        self.jwt_secret: str = os.getenv(
-            "JWT_SECRET",
-            "dev-secret-key-change-in-production"
+        # Better Auth shared secret for JWT verification (HS256)
+        # CRITICAL: Must match frontend BETTER_AUTH_SECRET exactly
+        # Falls back to JWT_SECRET for backward compatibility
+        self.better_auth_secret: str = os.getenv(
+            "BETTER_AUTH_SECRET",
+            os.getenv("JWT_SECRET", "dev-secret-key-change-in-production")
+        )
+        # Better Auth frontend URL (for reference only)
+        self.better_auth_url: str = os.getenv(
+            "BETTER_AUTH_URL",
+            "http://localhost:3000"
         )
         self.jwt_expiry_hours: int = int(os.getenv("JWT_EXPIRY_HOURS", "24"))
         cors_env = os.getenv("CORS_ORIGINS", "*")

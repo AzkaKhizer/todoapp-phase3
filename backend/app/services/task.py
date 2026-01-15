@@ -13,7 +13,7 @@ from app.schemas.task import TaskCreate, TaskPatch, TaskUpdate
 
 async def create_task(
     session: AsyncSession,
-    user_id: uuid.UUID,
+    user_id: str,
     data: TaskCreate,
 ) -> Task:
     """Create a new task for a user."""
@@ -30,7 +30,7 @@ async def create_task(
 
 async def get_tasks(
     session: AsyncSession,
-    user_id: uuid.UUID,
+    user_id: str,
     limit: int = 100,
     offset: int = 0,
 ) -> tuple[list[Task], int]:
@@ -57,7 +57,7 @@ async def get_tasks(
 async def get_task_by_id(
     session: AsyncSession,
     task_id: uuid.UUID,
-    user_id: uuid.UUID,
+    user_id: str,
 ) -> Task:
     """Get a task by ID, ensuring user ownership."""
     query = select(Task).where(Task.id == task_id)
@@ -76,7 +76,7 @@ async def get_task_by_id(
 async def update_task(
     session: AsyncSession,
     task_id: uuid.UUID,
-    user_id: uuid.UUID,
+    user_id: str,
     data: TaskUpdate,
 ) -> Task:
     """Full update of a task."""
@@ -96,7 +96,7 @@ async def update_task(
 async def patch_task(
     session: AsyncSession,
     task_id: uuid.UUID,
-    user_id: uuid.UUID,
+    user_id: str,
     data: TaskPatch,
 ) -> Task:
     """Partial update of a task."""
@@ -121,7 +121,7 @@ async def patch_task(
 async def delete_task(
     session: AsyncSession,
     task_id: uuid.UUID,
-    user_id: uuid.UUID,
+    user_id: str,
 ) -> None:
     """Delete a task."""
     task = await get_task_by_id(session, task_id, user_id)
@@ -132,7 +132,7 @@ async def delete_task(
 async def toggle_task(
     session: AsyncSession,
     task_id: uuid.UUID,
-    user_id: uuid.UUID,
+    user_id: str,
 ) -> Task:
     """Toggle task completion status."""
     task = await get_task_by_id(session, task_id, user_id)

@@ -4,117 +4,79 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
-  useState,
   type ReactNode,
 } from "react";
 
-import { api, ApiError } from "@/lib/api";
-import { getToken, removeToken, setToken } from "@/lib/auth";
-import type {
-  AuthResponse,
-  LoginRequest,
-  User,
-  UserCreateRequest,
-} from "@/lib/types";
+import {
+  authClient,
+  signIn,
+  signUp,
+  signOut,
+  useSession,
+} from "@/lib/auth-client";
+import type { User } from "@/lib/types";
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (data: LoginRequest) => Promise<void>;
-  register: (data: UserCreateRequest) => Promise<void>;
-  logout: () => void;
+  login: (email: string, password: string) => Promise<void>;
+  register: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
   error: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: session, isPending, error: sessionError } = useSession();
 
-  // Check for existing session on mount
-  useEffect(() => {
-    const checkAuth = async () => {
-      const token = getToken();
-      if (!token) {
-        setIsLoading(false);
-        return;
+  // Map Better Auth user to our User type
+  const user: User | null = session?.user
+    ? {
+        id: session.user.id,
+        email: session.user.email,
+        created_at: session.user.createdAt?.toString() || new Date().toISOString(),
       }
+    : null;
 
-      try {
-        const userData = await api.get<User>("/auth/me", true);
-        setUser(userData);
-      } catch {
-        removeToken();
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const login = useCallback(async (email: string, password: string) => {
+    const result = await signIn.email({
+      email,
+      password,
+    });
 
-    checkAuth();
-  }, []);
-
-  const login = useCallback(async (data: LoginRequest) => {
-    setError(null);
-    setIsLoading(true);
-
-    try {
-      const response = await api.post<AuthResponse>("/auth/login", data);
-      setToken(response.token);
-      setUser(response.user);
-    } catch (err) {
-      if (err instanceof ApiError) {
-        setError(err.message);
-      } else {
-        setError("An error occurred during login");
-      }
-      throw err;
-    } finally {
-      setIsLoading(false);
+    if (result.error) {
+      throw new Error(result.error.message || "Login failed");
     }
   }, []);
 
-  const register = useCallback(async (data: UserCreateRequest) => {
-    setError(null);
-    setIsLoading(true);
+  const register = useCallback(async (email: string, password: string) => {
+    const result = await signUp.email({
+      email,
+      password,
+      name: email.split("@")[0], // Use email prefix as name
+    });
 
-    try {
-      const response = await api.post<AuthResponse>("/auth/register", data);
-      setToken(response.token);
-      setUser(response.user);
-    } catch (err) {
-      if (err instanceof ApiError) {
-        setError(err.message);
-      } else if (err instanceof TypeError && err.message.includes("fetch")) {
-        setError("Cannot connect to server. Please ensure the backend is running.");
-      } else {
-        setError("An error occurred during registration");
-        console.error("Registration error:", err);
-      }
-      throw err;
-    } finally {
-      setIsLoading(false);
+    if (result.error) {
+      throw new Error(result.error.message || "Registration failed");
     }
   }, []);
 
-  const logout = useCallback(() => {
-    removeToken();
-    setUser(null);
+  const logout = useCallback(async () => {
+    await signOut();
   }, []);
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        isLoading,
-        isAuthenticated: !!user,
+        isLoading: isPending,
+        isAuthenticated: !!session?.user,
         login,
         register,
         logout,
-        error,
+        error: sessionError?.message || null,
       }}
     >
       {children}

@@ -19,7 +19,7 @@ export function useAuth() {
 
   const login = useCallback(
     async (email: string, password: string) => {
-      await contextLogin({ email, password });
+      await contextLogin(email, password);
       router.push("/dashboard");
     },
     [contextLogin, router]
@@ -27,14 +27,14 @@ export function useAuth() {
 
   const register = useCallback(
     async (email: string, password: string) => {
-      await contextRegister({ email, password });
+      await contextRegister(email, password);
       router.push("/dashboard");
     },
     [contextRegister, router]
   );
 
-  const logout = useCallback(() => {
-    contextLogout();
+  const logout = useCallback(async () => {
+    await contextLogout();
     router.push("/login");
   }, [contextLogout, router]);
 

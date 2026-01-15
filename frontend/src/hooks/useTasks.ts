@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { useSession } from "@/lib/auth-client";
 import { api, ApiError } from "@/lib/api";
 import type {
   Task,
@@ -12,20 +13,29 @@ import type {
 } from "@/lib/types";
 
 export function useTasks() {
+  const { data: session, isPending: isSessionLoading } = useSession();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [total, setTotal] = useState(0);
 
   const fetchTasks = useCallback(async () => {
+    if (!session?.user) {
+      console.log("No session, skipping task fetch");
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
     try {
+      console.log("Fetching tasks for user:", session.user.id);
       const response = await api.get<TaskListResponse>("/tasks", true);
       setTasks(response.tasks);
       setTotal(response.total);
     } catch (err) {
+      console.error("Task fetch error:", err);
       if (err instanceof ApiError) {
         setError(err.message);
       } else {
@@ -34,11 +44,16 @@ export function useTasks() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [session?.user]);
 
   useEffect(() => {
-    fetchTasks();
-  }, [fetchTasks]);
+    // Only fetch when session is loaded and user is authenticated
+    if (!isSessionLoading && session?.user) {
+      fetchTasks();
+    } else if (!isSessionLoading && !session?.user) {
+      setIsLoading(false);
+    }
+  }, [isSessionLoading, session?.user, fetchTasks]);
 
   const createTask = useCallback(async (data: TaskCreateRequest) => {
     try {

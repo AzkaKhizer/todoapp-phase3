@@ -11,7 +11,6 @@ from app.config import get_settings
 from app.database import create_tables
 from app.exceptions import TodoException
 # Import models before create_tables() to register them with SQLModel.metadata
-from app.models.user import User  # noqa: F401
 from app.models.task import Task  # noqa: F401
 from app.routers.auth import router as auth_router
 from app.routers.tasks import router as tasks_router
@@ -39,8 +38,8 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["*"],

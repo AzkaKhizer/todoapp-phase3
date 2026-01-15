@@ -35,7 +35,7 @@ class TaskResponse(BaseModel):
     title: str
     description: str
     is_complete: bool
-    user_id: uuid.UUID
+    user_id: str  # Better Auth uses nanoid format, not UUID
     created_at: datetime
     updated_at: datetime
 
