@@ -9,8 +9,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
-# Expose port
-EXPOSE 8000
+# Expose port (Hugging Face uses 7860)
+EXPOSE 7860
 
 # Start command
 CMD ["python", "main.py"]
