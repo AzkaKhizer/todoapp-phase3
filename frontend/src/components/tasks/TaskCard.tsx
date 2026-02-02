@@ -38,11 +38,11 @@ export function TaskCard({ task, onToggle, onEdit, onDelete }: TaskCardProps) {
   return (
     <div
       className={`
-        glass-card rounded-xl p-5 transition-all duration-300 hover:border-[var(--accent-primary)]/20
+        glass-card rounded-xl p-3 sm:p-5 transition-all duration-300 hover:border-[var(--accent-primary)]/20
         ${task.is_complete ? "opacity-60" : ""}
       `}
     >
-      <div className="flex items-start gap-4">
+      <div className="flex items-start gap-2 sm:gap-4">
         {/* Checkbox */}
         <button
           onClick={handleToggle}
@@ -92,7 +92,7 @@ export function TaskCard({ task, onToggle, onEdit, onDelete }: TaskCardProps) {
         <div className="flex-shrink-0 flex items-center gap-1">
           <button
             onClick={() => onEdit(task)}
-            className="p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/10 transition-all duration-200"
+            className="p-2.5 sm:p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/10 transition-all duration-200"
             aria-label="Edit task"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -119,7 +119,7 @@ export function TaskCard({ task, onToggle, onEdit, onDelete }: TaskCardProps) {
           ) : (
             <button
               onClick={() => setShowConfirm(true)}
-              className="p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--error)] hover:bg-[var(--error)]/10 transition-all duration-200"
+              className="p-2.5 sm:p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--error)] hover:bg-[var(--error)]/10 transition-all duration-200"
               aria-label="Delete task"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

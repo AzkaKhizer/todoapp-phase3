@@ -8,11 +8,11 @@ import { AuthProvider } from "@/contexts/AuthContext";
 export default function LoginPage() {
   return (
     <AuthProvider>
-      <div className="min-h-screen bg-gradient-radial noise relative overflow-hidden flex items-center justify-center p-6">
+      <div className="min-h-screen bg-gradient-radial noise relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
         {/* Background Effects */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-gradient-glow rounded-full blur-3xl animate-pulse-slow" />
-          <div className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-glow rounded-full blur-3xl animate-pulse-slow delay-200" />
+          <div className="absolute top-1/3 right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-glow rounded-full blur-3xl animate-pulse-slow" />
+          <div className="absolute bottom-1/4 left-1/3 w-56 h-56 sm:w-80 sm:h-80 bg-gradient-glow rounded-full blur-3xl animate-pulse-slow delay-200" />
         </div>
 
         {/* Back to Home */}
@@ -28,7 +28,7 @@ export default function LoginPage() {
 
         {/* Card */}
         <div className="relative z-10 w-full max-w-md animate-scale-in">
-          <div className="card-elevated rounded-2xl p-8">
+          <div className="card-elevated rounded-2xl p-5 sm:p-8">
             {/* Logo */}
             <div className="flex justify-center mb-8">
               <Link href="/" className="flex items-center gap-3 group">

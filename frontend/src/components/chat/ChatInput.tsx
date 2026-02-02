@@ -51,13 +51,13 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-      <div className="flex gap-3">
+      <div className="flex gap-2 sm:gap-3">
         <div className="flex-1 relative">
           <textarea
             ref={textareaRef}
             name="message"
-            placeholder="Type your message... (Shift+Enter for new line)"
-            className="w-full bg-[var(--bg-tertiary)] border border-[var(--glass-border)] rounded-xl px-4 py-3 text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/50 resize-none pr-16"
+            placeholder="Type a message..."
+            className="w-full bg-[var(--bg-tertiary)] border border-[var(--glass-border)] rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/50 resize-none pr-12 sm:pr-16"
             rows={1}
             maxLength={MAX_LENGTH}
             disabled={isLoading}

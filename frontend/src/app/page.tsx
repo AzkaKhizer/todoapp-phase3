@@ -7,8 +7,8 @@ export default function LandingPage() {
     <div className="min-h-screen bg-gradient-radial noise relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-glow rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-glow rounded-full blur-3xl animate-pulse-slow delay-200" />
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-glow rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-1/4 right-1/4 w-56 h-56 sm:w-80 sm:h-80 bg-gradient-glow rounded-full blur-3xl animate-pulse-slow delay-200" />
 
         {/* Floating geometric shapes */}
         <div className="absolute top-20 right-20 w-2 h-2 bg-[var(--accent-primary)] rounded-full animate-float opacity-60" />
@@ -18,7 +18,7 @@ export default function LandingPage() {
       </div>
 
       {/* Navigation */}
-      <nav className="relative z-10 px-6 py-6 animate-fade-in">
+      <nav className="relative z-10 px-4 sm:px-6 py-4 sm:py-6 animate-fade-in">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--accent-secondary)] to-[var(--accent-muted)] flex items-center justify-center transition-transform group-hover:scale-110">
@@ -29,11 +29,11 @@ export default function LandingPage() {
             <span className="text-xl font-semibold tracking-tight">Taskflow</span>
           </Link>
 
-          <div className="flex items-center gap-4">
-            <Link href="/login" className="btn-ghost text-sm">
+          <div className="flex items-center gap-2 sm:gap-4 ml-4">
+            <Link href="/login" className="btn-ghost text-xs sm:text-sm">
               Sign In
             </Link>
-            <Link href="/register" className="btn-primary text-sm">
+            <Link href="/register" className="btn-primary text-xs sm:text-sm">
               <span>Get Started</span>
             </Link>
           </div>
@@ -41,7 +41,7 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <main className="relative z-10 px-6 pt-20 pb-32">
+      <main className="relative z-10 px-4 sm:px-6 pt-12 sm:pt-20 pb-16 sm:pb-32">
         <div className="max-w-6xl mx-auto">
           <div className="max-w-3xl mx-auto text-center">
             {/* Badge */}
@@ -74,7 +74,7 @@ export default function LandingPage() {
           </div>
 
           {/* Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mt-32">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mt-16 sm:mt-32">
             {[
               {
                 icon: (
@@ -106,7 +106,7 @@ export default function LandingPage() {
             ].map((feature, index) => (
               <div
                 key={feature.title}
-                className={`glass-card rounded-2xl p-8 hover:border-[var(--accent-primary)]/30 transition-all duration-300 hover:-translate-y-1 animate-slide-up opacity-0`}
+                className={`glass-card rounded-2xl p-5 sm:p-8 hover:border-[var(--accent-primary)]/30 transition-all duration-300 hover:-translate-y-1 animate-slide-up opacity-0`}
                 style={{ animationDelay: `${400 + index * 100}ms` }}
               >
                 <div className="w-12 h-12 rounded-xl bg-[var(--bg-tertiary)] flex items-center justify-center mb-5 text-[var(--accent-primary)]">
@@ -123,7 +123,7 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 px-6 py-8 border-t border-[var(--glass-border)]">
+      <footer className="relative z-10 px-4 sm:px-6 py-6 sm:py-8 border-t border-[var(--glass-border)]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-[var(--text-muted)]">
             2026 Taskflow. Crafted with precision.

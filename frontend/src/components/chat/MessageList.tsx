@@ -99,7 +99,7 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
     <div className="relative flex-1 flex flex-col overflow-hidden">
       <div
         ref={containerRef}
-        className="flex-1 p-6 overflow-y-auto"
+        className="flex-1 p-3 sm:p-6 overflow-y-auto"
         onScroll={handleScroll}
       >
         <div className="space-y-4">

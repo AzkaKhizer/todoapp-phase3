@@ -95,7 +95,7 @@ export function ConversationList({
                     onDelete(conversation.id);
                   }
                 }}
-                className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-[var(--error)]/10 text-[var(--text-muted)] hover:text-[var(--error)] transition-all"
+                className="opacity-0 group-hover:opacity-100 p-2 rounded hover:bg-[var(--error)]/10 text-[var(--text-muted)] hover:text-[var(--error)] transition-all"
                 title="Delete conversation"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

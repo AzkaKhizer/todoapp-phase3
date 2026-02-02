@@ -62,7 +62,7 @@ function DashboardContent() {
     <div className="min-h-screen bg-gradient-radial noise">
       <Header />
 
-      <main className="max-w-4xl mx-auto px-6 py-8">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {error && (
           <div className="mb-6 p-4 rounded-lg bg-[var(--error)]/10 border border-[var(--error)]/20 text-[var(--error)] text-sm flex items-center gap-3 animate-slide-up">
             <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -73,16 +73,16 @@ function DashboardContent() {
         )}
 
         {/* Stats Section */}
-        <div className="grid grid-cols-3 gap-4 mb-8 animate-slide-up">
-          <div className="glass-card rounded-xl p-5 text-center">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-8 animate-slide-up">
+          <div className="glass-card rounded-xl p-4 sm:p-5 text-center">
             <p className="text-3xl font-bold text-gradient">{tasks.length}</p>
             <p className="text-sm text-[var(--text-muted)] mt-1">Total Tasks</p>
           </div>
-          <div className="glass-card rounded-xl p-5 text-center">
+          <div className="glass-card rounded-xl p-4 sm:p-5 text-center">
             <p className="text-3xl font-bold text-[var(--warning)]">{pendingCount}</p>
             <p className="text-sm text-[var(--text-muted)] mt-1">Pending</p>
           </div>
-          <div className="glass-card rounded-xl p-5 text-center">
+          <div className="glass-card rounded-xl p-4 sm:p-5 text-center">
             <p className="text-3xl font-bold text-[var(--success)]">{completedCount}</p>
             <p className="text-sm text-[var(--text-muted)] mt-1">Completed</p>
           </div>

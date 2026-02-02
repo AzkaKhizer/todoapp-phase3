@@ -10,7 +10,7 @@ export function EmptyState({
   message = "Create your first task to get started!",
 }: EmptyStateProps) {
   return (
-    <div className="glass-card rounded-2xl p-12 text-center">
+    <div className="glass-card rounded-2xl p-6 sm:p-12 text-center">
       <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[var(--accent-primary)]/20 to-[var(--accent-muted)]/10 mb-6">
         <svg
           className="w-10 h-10 text-[var(--accent-primary)]"

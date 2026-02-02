@@ -38,7 +38,7 @@ export function ConversationSidebar({
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:relative inset-y-0 left-0 z-50 w-72 bg-[var(--bg-secondary)] border-r border-[var(--glass-border)] flex flex-col transform transition-transform duration-300 lg:transform-none ${
+        className={`fixed lg:relative inset-y-0 left-0 z-50 w-64 sm:w-72 bg-[var(--bg-secondary)] border-r border-[var(--glass-border)] flex flex-col transform transition-transform duration-300 lg:transform-none ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
