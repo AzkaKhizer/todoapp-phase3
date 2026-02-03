@@ -1,0 +1,17 @@
+node_modules/
+.next/
+.env
+.env.*
+.git/
+.gitignore
+out/
+coverage/
+.turbo/
+*.tsbuildinfo
+.idea/
+.vscode/
+*.swp
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

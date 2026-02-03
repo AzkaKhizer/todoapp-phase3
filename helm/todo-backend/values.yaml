@@ -1,0 +1,51 @@
+image:
+  repository: todo-backend
+  tag: latest
+  pullPolicy: Never
+
+replicaCount: 1
+
+containerPort: 8000
+
+service:
+  type: ClusterIP
+  port: 8000
+
+livenessProbe:
+  tcpSocket:
+    port: 8000
+  initialDelaySeconds: 15
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /api/health
+    port: 8000
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+config:
+  CORS_ORIGINS: "*"
+  BETTER_AUTH_URL: "http://todo-frontend:3000"
+  PORT: "8000"
+
+secrets:
+  DATABASE_URL: ""
+  BETTER_AUTH_SECRET: ""
+  OPENAI_API_KEY: ""
+
+ingress:
+  enabled: false
+  className: nginx
+  host: ""
+  paths:
+    - path: /api
+      pathType: Prefix

@@ -1,0 +1,49 @@
+image:
+  repository: todo-frontend
+  tag: latest
+  pullPolicy: Never
+
+replicaCount: 1
+
+containerPort: 3000
+
+service:
+  type: NodePort
+  port: 3000
+
+livenessProbe:
+  tcpSocket:
+    port: 3000
+  initialDelaySeconds: 20
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 3000
+  initialDelaySeconds: 10
+  periodSeconds: 5
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+config:
+  NEXT_PUBLIC_API_URL: "http://todo-backend:8000/api"
+  NEXT_PUBLIC_BETTER_AUTH_URL: "http://todo-frontend:3000"
+
+secrets:
+  DATABASE_URL: ""
+  BETTER_AUTH_SECRET: ""
+
+ingress:
+  enabled: false
+  className: nginx
+  host: ""
+  paths:
+    - path: /
+      pathType: Prefix
