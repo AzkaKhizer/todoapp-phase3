@@ -71,18 +71,18 @@ provider "azuread" {
 
 provider "helm" {
   kubernetes {
-    host                   = azurerm_kubernetes_cluster.aks.kube_config[0].host
-    client_certificate     = base64decode(azurerm_kubernetes_cluster.aks.kube_config[0].client_certificate)
-    client_key             = base64decode(azurerm_kubernetes_cluster.aks.kube_config[0].client_key)
-    cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.aks.kube_config[0].cluster_ca_certificate)
+    host                   = azurerm_kubernetes_cluster.aks.kube_admin_config[0].host
+    client_certificate     = base64decode(azurerm_kubernetes_cluster.aks.kube_admin_config[0].client_certificate)
+    client_key             = base64decode(azurerm_kubernetes_cluster.aks.kube_admin_config[0].client_key)
+    cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.aks.kube_admin_config[0].cluster_ca_certificate)
   }
 }
 
 provider "kubernetes" {
-  host                   = azurerm_kubernetes_cluster.aks.kube_config[0].host
-  client_certificate     = base64decode(azurerm_kubernetes_cluster.aks.kube_config[0].client_certificate)
-  client_key             = base64decode(azurerm_kubernetes_cluster.aks.kube_config[0].client_key)
-  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.aks.kube_config[0].cluster_ca_certificate)
+  host                   = azurerm_kubernetes_cluster.aks.kube_admin_config[0].host
+  client_certificate     = base64decode(azurerm_kubernetes_cluster.aks.kube_admin_config[0].client_certificate)
+  client_key             = base64decode(azurerm_kubernetes_cluster.aks.kube_admin_config[0].client_key)
+  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.aks.kube_admin_config[0].cluster_ca_certificate)
 }
 
 # =============================================================================
@@ -130,7 +130,7 @@ locals {
   aks_name           = "${var.project_name}-${var.environment}-aks"
   acr_name           = "${var.project_name}${var.environment}acr${random_string.suffix.result}"
   eventhub_namespace = "${var.project_name}-${var.environment}-eh"
-  redis_name         = "${var.project_name}-${var.environment}-redis"
+  redis_name         = "${var.project_name}-${var.environment}-redis-${random_string.suffix.result}"
   keyvault_name      = "${var.project_name}-${var.environment}-kv-${random_string.suffix.result}"
   postgres_name      = "${var.project_name}-${var.environment}-pg"
 }

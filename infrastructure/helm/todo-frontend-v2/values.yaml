@@ -57,11 +57,15 @@ tolerations: []
 
 affinity: {}
 
-# Environment variables
+# Environment variables (non-secret values only)
+# BETTER_AUTH_SECRET comes from envFromSecrets
 env:
   NEXT_PUBLIC_API_URL: "http://todo-backend:8000/api"
-  BETTER_AUTH_SECRET: ""
   BETTER_AUTH_URL: "http://todo-frontend:3000"
+
+# Secrets reference (Kubernetes secrets)
+envFromSecrets:
+  - name: todo-app-secrets
 
 # Health checks
 livenessProbe:

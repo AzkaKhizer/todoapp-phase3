@@ -85,10 +85,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
     log_analytics_workspace_id = azurerm_log_analytics_workspace.aks.id
   }
 
-  # Azure AD integration
+  # Azure AD integration (using Kubernetes RBAC, not Azure RBAC)
   azure_active_directory_role_based_access_control {
     managed                = true
-    azure_rbac_enabled     = true
+    azure_rbac_enabled     = false
     admin_group_object_ids = var.aks_admin_group_ids
   }
 

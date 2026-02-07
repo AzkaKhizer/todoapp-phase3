@@ -71,15 +71,12 @@ tolerations: []
 
 affinity: {}
 
-# Environment variables
+# Environment variables (only set non-secret values here)
+# DATABASE_URL and BETTER_AUTH_SECRET come from envFromSecrets
 env:
-  # Database configuration
-  DATABASE_URL: ""
-  # Better Auth configuration
-  BETTER_AUTH_SECRET: ""
   BETTER_AUTH_URL: "http://todo-frontend:3000"
-  # Environment
   ENVIRONMENT: "development"
+  CORS_ORIGINS: "http://20.221.116.37,http://localhost:3000"
 
 # Secrets reference (Kubernetes secrets)
 envFromSecrets:

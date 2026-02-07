@@ -12,10 +12,19 @@ class Settings:
     """Application settings loaded from environment variables."""
 
     def __init__(self):
-        self.database_url: str = os.getenv(
+        db_url = os.getenv(
             "DATABASE_URL",
             "postgresql+asyncpg://localhost/todo"
         )
+        # Convert postgresql:// to postgresql+asyncpg:// for async support
+        if db_url.startswith("postgresql://"):
+            db_url = db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+        # Remove sslmode query param as asyncpg handles SSL via connect_args
+        if "?sslmode=" in db_url:
+            db_url = db_url.split("?sslmode=")[0]
+        elif "&sslmode=" in db_url:
+            db_url = db_url.replace("&sslmode=require", "").replace("&sslmode=prefer", "")
+        self.database_url: str = db_url
         # Better Auth shared secret for JWT verification (HS256)
         # CRITICAL: Must match frontend BETTER_AUTH_SECRET exactly
         # Falls back to JWT_SECRET for backward compatibility

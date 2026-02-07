@@ -16,8 +16,8 @@ resource "azurerm_eventhub_namespace" "main" {
   sku                 = var.eventhub_sku
   capacity            = var.eventhub_capacity
 
-  # Enable Kafka protocol
-  kafka_enabled = true
+  # Note: Kafka protocol is enabled by default in Standard/Premium tier
+  # The kafka_enabled argument was removed in azurerm provider 4.x
 
   # Auto-inflate for scaling (Standard tier only)
   auto_inflate_enabled     = var.eventhub_sku == "Standard" ? true : false
